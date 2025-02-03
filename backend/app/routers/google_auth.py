@@ -53,9 +53,15 @@ async def callback(code: str, request: Request, response: Response):
                 detail="No refresh token received. Please ensure you have revoked access and try again."
             )
         
-        # Set the cookie
+        # Create the response first
+        redirect_response = RedirectResponse(
+            url=settings.DASHBOARD_URL,
+            status_code=status.HTTP_303_SEE_OTHER
+        )
+        
+        # Set the cookie on the redirect response
         print(f"Setting cookie {settings.COOKIE_NAME} with token: \n{credentials.token}\n\n")
-        response.set_cookie(
+        redirect_response.set_cookie(
             key=settings.COOKIE_NAME,
             value=credentials.token,
             httponly=True,
@@ -66,13 +72,10 @@ async def callback(code: str, request: Request, response: Response):
             path="/"
         )
         
-        # Redirect to dashboard
-        return RedirectResponse(
-            url=settings.DASHBOARD_URL,
-            status_code=status.HTTP_303_SEE_OTHER
-        )
+        return redirect_response
         
     except Exception as e:
+        print(f"Error in callback: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
