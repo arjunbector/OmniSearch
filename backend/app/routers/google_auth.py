@@ -102,13 +102,41 @@ async def list_files(request: Request, token: str = Depends(google_auth.verify_t
         
         service = build('drive', 'v3', credentials=credentials)
         
+        # Define the MIME types we want to filter
+        mime_types = [
+            'application/pdf',  # PDFs
+            'application/vnd.google-apps.document',  # Google Docs
+            'application/vnd.google-apps.spreadsheet',  # Google Sheets
+        ]
+        
+        # Create the query string
+        query = " or ".join([f"mimeType='{mime}'" for mime in mime_types])
+        
         results = service.files().list(
-            pageSize=10,
-            fields="nextPageToken, files(id, name, mimeType, modifiedTime)"
+            pageSize=50,  # Increased page size
+            q=query,
+            fields="nextPageToken, files(id, name, mimeType, modifiedTime, webViewLink)"
         ).execute()
         
+        # Format the files list with more readable type names
+        formatted_files = []
+        for file in results.get('files', []):
+            file_type = {
+                'application/pdf': 'PDF',
+                'application/vnd.google-apps.document': 'Google Doc',
+                'application/vnd.google-apps.spreadsheet': 'Google Sheet'
+            }.get(file['mimeType'], file['mimeType'])
+            
+            formatted_files.append({
+                'name': file['name'],
+                'type': file_type,
+                'modified': file['modifiedTime'],
+                'viewLink': file.get('webViewLink', ''),
+                'id': file['id']
+            })
+        
         return {
-            "files": results.get('files', [])
+            "files": formatted_files
         }
         
     except Exception as e:
