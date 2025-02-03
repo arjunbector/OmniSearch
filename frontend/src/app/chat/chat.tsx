@@ -117,7 +117,7 @@ export default function Chat() {
           {!hasStarted ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center space-y-4">
-                <Bot className="h-12 w-12 mx-auto text-primary/60" />
+                <Bot className="h-12 w-12 mx-auto text-primary" />
                 <h1 className="text-4xl font-bold text-primary">
                   Welcome to AI Chat
                 </h1>
