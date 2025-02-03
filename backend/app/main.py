@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.routers import google_auth
 from app.config import settings, ROOT_DIR
 import os
@@ -7,6 +8,16 @@ app = FastAPI(
     title="Omniverse Backend",
     description="Backend API for Omniverse",
     version="0.1.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+    expose_headers=["*"]
 )
 
 # @app.on_event("startup")

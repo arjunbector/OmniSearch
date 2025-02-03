@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     COOKIE_NAME: str = "auth_token"
     # Set to False in production if using HTTPS
     COOKIE_SECURE: bool = False
+    
+    # CORS Settings
+    CORS_ORIGINS: List[str] = ["*"]  # Allow all origins
+    CORS_ALLOW_CREDENTIALS: bool = True
+    CORS_ALLOW_METHODS: List[str] = ["*"]
+    CORS_ALLOW_HEADERS: List[str] = ["*"]
 
     class Config:
         env_file = ROOT_DIR / ".env"
