@@ -20,11 +20,11 @@ class Settings(BaseSettings):
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/auth/callback"
     GOOGLE_AUTH_SCOPES: List[str] = GOOGLE_OAUTH_SCOPES
     SECRET_KEY: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 720
     COOKIE_NAME: str = "auth_token"
-    COOKIE_SECURE: bool = False  # Set to True only if using HTTPS
+    COOKIE_SECURE: bool = False  
     COOKIE_SAMESITE: str = "lax"
-    COOKIE_DOMAIN: Optional[str] = ""  # Empty string instead of None
+    COOKIE_DOMAIN: Optional[str] = ""  
     COOKIE_PATH: str = "/"
     
     # Dashboard redirect URL
