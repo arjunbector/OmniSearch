@@ -17,7 +17,6 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str
     GOOGLE_CLIENT_SECRET: str
     GOOGLE_API_KEY: str
-    # Make sure this matches exactly what's in Google Cloud Console
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/auth/callback"
     GOOGLE_AUTH_SCOPES: List[str] = GOOGLE_OAUTH_SCOPES
     SECRET_KEY: str
@@ -40,8 +39,3 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
-
-# Add this for debugging
-if __name__ == "__main__":
-    print(f"Looking for .env file at: {ROOT_DIR / '.env'}")
-    print(f"File exists: {(ROOT_DIR / '.env').exists()}") 
