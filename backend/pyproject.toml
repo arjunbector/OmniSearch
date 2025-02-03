@@ -4,4 +4,14 @@ version = "0.1.0"
 description = "Omniverse Backend"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = ["fastapi", "uvicorn"]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "google-auth",
+    "google-auth-oauthlib",
+    "google-auth-httplib2",
+    "google-api-python-client",
+    "python-jose[cryptography]",
+    "python-multipart",
+    "pydantic-settings"
+]
