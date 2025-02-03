@@ -1,6 +1,13 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+
+const APi_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
 const GoogleLogin = () => {
+  const handleLogin = async () => {
+    window.open(`${APi_ENDPOINT}/auth/login`, "_blank");
+  };
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md">
@@ -14,6 +21,9 @@ const GoogleLogin = () => {
         </CardHeader>
         <CardContent>
           <button
+            onClick={() => {
+              handleLogin();
+            }}
             className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <svg
