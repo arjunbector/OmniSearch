@@ -53,17 +53,6 @@ async def callback(code: str, request: Request, response: Response):
                 detail="No refresh token received. Please ensure you have revoked access and try again."
             )
         
-        # Create JSON response with token information
-        token_info = {
-            "access_token": credentials.token,
-            "refresh_token": credentials.refresh_token,
-            "token_type": "Bearer",
-            "expires_in": credentials.expiry.timestamp() if credentials.expiry else None,
-            "scope": credentials.scopes,
-            "token_uri": credentials.token_uri,
-            "client_id": credentials.client_id,
-        }
-        
         # Set the cookie
         print(f"Setting cookie {settings.COOKIE_NAME} with token: \n{credentials.token}\n\n")
         response.set_cookie(
@@ -77,8 +66,11 @@ async def callback(code: str, request: Request, response: Response):
             path="/"
         )
         
-        # Return token information
-        return token_info
+        # Redirect to dashboard
+        return RedirectResponse(
+            url=settings.DASHBOARD_URL,
+            status_code=status.HTTP_303_SEE_OTHER
+        )
         
     except Exception as e:
         raise HTTPException(
@@ -109,11 +101,10 @@ async def list_files(request: Request, token: str = Depends(google_auth.verify_t
             'application/vnd.google-apps.spreadsheet',  # Google Sheets
         ]
         
-        # Create the query string
         query = " or ".join([f"mimeType='{mime}'" for mime in mime_types])
         
         results = service.files().list(
-            pageSize=50,  # Increased page size
+            pageSize=50, 
             q=query,
             fields="nextPageToken, files(id, name, mimeType, modifiedTime, webViewLink)"
         ).execute()

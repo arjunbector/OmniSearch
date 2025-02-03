@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     # Set to False in production if using HTTPS
     COOKIE_SECURE: bool = False
     
+    # Dashboard redirect URL
+    DASHBOARD_URL: str = "http://localhost:3000/dashboard"
+    
     # CORS Settings
     CORS_ORIGINS: List[str] = ["*"]  # Allow all origins
     CORS_ALLOW_CREDENTIALS: bool = True
