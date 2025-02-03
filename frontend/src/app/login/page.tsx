@@ -1,4 +1,4 @@
-import GoogleLogin from "@/components/ui/google-login";
+import GoogleLogin from "@/components/google-login";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { Metadata } from "next";
 
