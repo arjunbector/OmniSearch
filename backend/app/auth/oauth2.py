@@ -20,10 +20,20 @@ class OAuth2CookieBearer(OAuth2):
         )
 
     async def __call__(self, request: Request) -> Optional[str]:
+        print("\nDebugging OAuth Request:")
+        print(f"Headers: {request.headers.get('authorization')}")
+        print(f"Cookies: {request.cookies}")
+        
+        # First try to get token from Authorization header
+        auth_header = request.headers.get('authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            print("Found token in header")
+            return auth_header.replace('Bearer ', '')
+            
+        # If no header, try cookie
         token = request.cookies.get(settings.COOKIE_NAME)
-        print(f"Cookies in request: {request.cookies}")
-        print(f"Looking for cookie named: {settings.COOKIE_NAME}")
-        print(f"Found token: {bool(token)}")
+        print(f"Cookie token found: {bool(token)}")
+        
         if not token:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -41,7 +51,7 @@ class GoogleAuth:
         self.redirect_uri = settings.GOOGLE_REDIRECT_URI
 
     async def verify_token(self, token: str = Depends(oauth2_scheme)) -> str:
-        # Return the token directly instead of verifying with Google
+        print(f"\nToken received in verify_token: {token[:10]}...")
         return token
 
 google_auth = GoogleAuth() 
